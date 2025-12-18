@@ -1,0 +1,98 @@
+﻿<?xml version="1.0"?>
+<!DOCTYPE rdf:RDF [
+    <!ENTITY owl "http://www.w3.org/2002/07/owl#" >
+    <!ENTITY xsd "http://www.w3.org/2001/XMLSchema#" >
+    <!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#" >
+    <!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#" >
+]>
+<rdf:RDF xmlns="http://www.semanticweb.org/ostrovok-simple#"
+     xml:base="http://www.semanticweb.org/ostrovok-simple"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#">
+
+    <!-- ОНТОЛОГИЯ -->
+    <owl:Ontology rdf:about="http://www.semanticweb.org/ostrovok-simple">
+        <rdfs:label>Выбор гостиницы (Островок)</rdfs:label>
+    </owl:Ontology>
+
+    <!-- КЛАССЫ -->
+    <owl:Class rdf:ID="Пользователь"/>
+    <owl:Class rdf:ID="Город"/>
+    <owl:Class rdf:ID="Гостиница"/>
+    <owl:Class rdf:ID="Номер"/>
+    <owl:Class rdf:ID="Бронирование"/>
+
+    <!-- ОБЪЕКТНЫЕ СВОЙСТВА -->
+    <owl:ObjectProperty rdf:ID="ищетВ">
+        <rdfs:domain rdf:resource="#Пользователь"/>
+        <rdfs:range rdf:resource="#Город"/>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:ID="показывает">
+        <rdfs:domain rdf:resource="#Город"/>
+        <rdfs:range rdf:resource="#Гостиница"/>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:ID="имеетНомер">
+        <rdfs:domain rdf:resource="#Гостиница"/>
+        <rdfs:range rdf:resource="#Номер"/>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:ID="бронирует">
+        <rdfs:domain rdf:resource="#Пользователь"/>
+        <rdfs:range rdf:resource="#Бронирование"/>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:ID="дляНомера">
+        <rdfs:domain rdf:resource="#Бронирование"/>
+        <rdfs:range rdf:resource="#Номер"/>
+    </owl:ObjectProperty>
+
+    <!-- DATA СВОЙСТВА -->
+    <owl:DatatypeProperty rdf:ID="название">
+        <rdfs:range rdf:resource="&xsd;string"/>
+    </owl:DatatypeProperty>
+
+    <owl:DatatypeProperty rdf:ID="цена">
+        <rdfs:domain rdf:resource="#Номер"/>
+        <rdfs:range rdf:resource="&xsd;decimal"/>
+    </owl:DatatypeProperty>
+
+    <!-- ИНДИВИДЫ -->
+    <Пользователь rdf:ID="Иван">
+        <rdfs:label>Иван</rdfs:label>
+    </Пользователь>
+
+    <Город rdf:ID="Сочи">
+        <название rdf:datatype="&xsd;string">Сочи</название>
+    </Город>
+
+    <Гостиница rdf:ID="Отель_Море">
+        <название rdf:datatype="&xsd;string">Отель Море</название>
+    </Гостиница>
+
+    <Номер rdf:ID="Номер_1">
+        <цена rdf:datatype="&xsd;decimal">5000</цена>
+    </Номер>
+
+    <Бронирование rdf:ID="Бронь_1">
+        <дляНомера rdf:resource="#Номер_1"/>
+    </Бронирование>
+
+    <!-- СВЯЗИ -->
+    <Пользователь rdf:about="#Иван">
+        <ищетВ rdf:resource="#Сочи"/>
+        <бронирует rdf:resource="#Бронь_1"/>
+    </Пользователь>
+
+    <Город rdf:about="#Сочи">
+        <показывает rdf:resource="#Отель_Море"/>
+    </Город>
+
+    <Гостиница rdf:about="#Отель_Море">
+        <имеетНомер rdf:resource="#Номер_1"/>
+    </Гостиница>
+
+</rdf:RDF>
