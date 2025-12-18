@@ -1,0 +1,139 @@
+<?xml version="1.0"?>
+<!DOCTYPE rdf:RDF [
+    <!ENTITY owl "http://www.w3.org/2002/07/owl#" >
+    <!ENTITY xsd "http://www.w3.org/2001/XMLSchema#" >
+    <!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#" >
+    <!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#" >
+]>
+<rdf:RDF xmlns="http://www.semanticweb.org/corporate-ontology#"
+     xml:base="http://www.semanticweb.org/corporate-ontology"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#">
+
+    <!-- ========== ОНТОЛОГИЯ ========== -->
+
+    <owl:Ontology rdf:about="http://www.semanticweb.org/corporate-ontology">
+        <rdfs:label>Корпоративная иерархия</rdfs:label>
+        <rdfs:comment>Онтология корпоративной структуры компании: департаменты, сотрудники и менеджеры</rdfs:comment>
+        <owl:versionInfo>Версия 1.0</owl:versionInfo>
+    </owl:Ontology>
+
+    <!-- ========== КЛАССЫ ========== -->
+
+    <owl:Class rdf:ID="Компания">
+        <rdfs:label>Компания</rdfs:label>
+    </owl:Class>
+
+    <owl:Class rdf:ID="Департамент">
+        <rdfs:label>Департамент</rdfs:label>
+    </owl:Class>
+
+    <owl:Class rdf:ID="Сотрудник">
+        <rdfs:label>Сотрудник</rdfs:label>
+    </owl:Class>
+
+    <owl:Class rdf:ID="Менеджер">
+        <rdfs:subClassOf rdf:resource="#Сотрудник"/>
+        <rdfs:label>Менеджер</rdfs:label>
+    </owl:Class>
+
+    <owl:Class rdf:ID="РуководительОтдела">
+        <rdfs:subClassOf rdf:resource="#Менеджер"/>
+        <rdfs:label>Руководитель отдела</rdfs:label>
+    </owl:Class>
+
+    <owl:Class rdf:ID="Аналитик">
+        <rdfs:subClassOf rdf:resource="#Сотрудник"/>
+        <rdfs:label>Аналитик</rdfs:label>
+    </owl:Class>
+
+    <!-- ========== OBJECT PROPERTIES ========== -->
+
+    <owl:ObjectProperty rdf:ID="имеетДепартамент">
+        <rdfs:domain rdf:resource="#Компания"/>
+        <rdfs:range rdf:resource="#Департамент"/>
+        <rdfs:label>имеет департамент</rdfs:label>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:ID="работаетВ">
+        <rdfs:domain rdf:resource="#Сотрудник"/>
+        <rdfs:range rdf:resource="#Департамент"/>
+        <rdfs:label>работает в</rdfs:label>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:ID="управляет">
+        <rdfs:domain rdf:resource="#Менеджер"/>
+        <rdfs:range rdf:resource="#Департамент"/>
+        <rdfs:label>управляет</rdfs:label>
+    </owl:ObjectProperty>
+
+    <owl:ObjectProperty rdf:ID="подчиняется">
+        <rdfs:domain rdf:resource="#Сотрудник"/>
+        <rdfs:range rdf:resource="#Менеджер"/>
+        <rdfs:label>подчиняется</rdfs:label>
+    </owl:ObjectProperty>
+
+    <!-- ========== DATA PROPERTIES ========== -->
+
+    <owl:DatatypeProperty rdf:ID="имеетИмя">
+        <rdfs:domain rdf:resource="#Сотрудник"/>
+        <rdfs:range rdf:resource="&xsd;string"/>
+        <rdfs:label>имеет имя</rdfs:label>
+    </owl:DatatypeProperty>
+
+    <owl:DatatypeProperty rdf:ID="имеетДолжность">
+        <rdfs:domain rdf:resource="#Сотрудник"/>
+        <rdfs:range rdf:resource="&xsd;string"/>
+        <rdfs:label>имеет должность</rdfs:label>
+    </owl:DatatypeProperty>
+
+    <owl:DatatypeProperty rdf:ID="имеетНазвание">
+        <rdfs:domain>
+            <owl:Class>
+                <owl:unionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="#Компания"/>
+                    <rdf:Description rdf:about="#Департамент"/>
+                </owl:unionOf>
+            </owl:Class>
+        </rdfs:domain>
+        <rdfs:range rdf:resource="&xsd;string"/>
+        <rdfs:label>имеет название</rdfs:label>
+    </owl:DatatypeProperty>
+
+    <!-- ========== ИНДИВИДЫ ========== -->
+
+    <Компания rdf:ID="Компания_Ромашка">
+        <имеетНазвание rdf:datatype="&xsd;string">ООО «Ромашка»</имеетНазвание>
+        <rdfs:label>Компания Ромашка</rdfs:label>
+    </Компания>
+
+    <Департамент rdf:ID="IT_Департамент">
+        <имеетНазвание rdf:datatype="&xsd;string">IT департамент</имеетНазвание>
+        <rdfs:label>IT департамент</rdfs:label>
+    </Департамент>
+
+    <РуководительОтдела rdf:ID="Иван_Петров">
+        <имеетИмя rdf:datatype="&xsd;string">Иван Петров</имеетИмя>
+        <имеетДолжность rdf:datatype="&xsd;string">Руководитель IT</имеетДолжность>
+        <работаетВ rdf:resource="#IT_Департамент"/>
+        <управляет rdf:resource="#IT_Департамент"/>
+        <rdfs:label>Иван Петров</rdfs:label>
+    </РуководительОтдела>
+
+    <Аналитик rdf:ID="Анна_Сидорова">
+        <имеетИмя rdf:datatype="&xsd;string">Анна Сидорова</имеетИмя>
+        <имеетДолжность rdf:datatype="&xsd;string">Бизнес-аналитик</имеетДолжность>
+        <работаетВ rdf:resource="#IT_Департамент"/>
+        <подчиняется rdf:resource="#Иван_Петров"/>
+        <rdfs:label>Анна Сидорова</rdfs:label>
+    </Аналитик>
+
+    <!-- ========== СВЯЗИ ========== -->
+
+    <Компания rdf:about="#Компания_Ромашка">
+        <имеетДепартамент rdf:resource="#IT_Департамент"/>
+    </Компания>
+
+</rdf:RDF>
